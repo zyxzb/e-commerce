@@ -32,7 +32,6 @@ const SingleProductPage = () => {
 
     useEffect(() => {
         fetchSingleProduct(`${url}${id}`);
-        console.log(name)
     }, [id])
 
     useEffect(() => {
@@ -54,6 +53,31 @@ const SingleProductPage = () => {
     return (
         <Wrapper>
             <PageHero title={name} product></PageHero>
+            <div className="section section-center page">
+                <Link to='/products' className='btn'>back to productss</Link>
+                <div className="product-center">
+                    <ProductImages images={images}/>
+                    <section className='content'>
+                        <h2>{name}</h2>
+                        <Stars stars={stars} reviews={reviews}/>
+                        <h5 className="price">{formatPrice(price)}</h5>
+                        <p className='desc'>{description}</p>
+                        <p className='info'>
+                            <span>Available:</span>
+                            {stock > 0
+                                ? ` ${stock} in stock`
+                                : 'out of stock'}
+                        </p>
+                        <p className='info'>
+                            <span>SKU:</span>{sku}
+                        </p>
+                        <p className='info'>
+                            <span>Brand:</span>{company}
+                        </p>
+                        <hr/> {stock > 0 && <AddToCart single_product={single_product}/>}
+                    </section>
+                </div>
+            </div>
         </Wrapper>
     )
 }

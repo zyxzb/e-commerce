@@ -43,6 +43,7 @@ const Sidebar = () => {
 
 const SidebarContainer = styled.div `
   text-align: center;
+  z-index: 2;
   .sidebar-header {
     display: flex;
     justify-content: space-between;

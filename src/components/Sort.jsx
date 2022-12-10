@@ -1,12 +1,56 @@
 import React from 'react'
-import { useFilterContext } from '../context/filter_context'
-import { BsFillGridFill, BsList } from 'react-icons/bs'
+import {useFilterContext} from '../context/filter_context'
+import {BsFillGridFill, BsList} from 'react-icons/bs'
 import styled from 'styled-components'
+
 const Sort = () => {
-  return <h4>sort </h4>
+    const {
+        filtered_products,
+        grid_view,
+        setGridView,
+        setListView,
+        sort,
+        updateSort
+    } = useFilterContext();
+
+    return (
+        <Wrapper>
+            <div className='btn-container'>
+                <button
+                    type='button'
+                    className={grid_view ? 'active' : null}
+                    onClick={setGridView}>
+                    <BsFillGridFill/>
+                </button>
+                <button
+                    type='button'
+                    className={!grid_view ? 'active' : null}
+                    onClick={setListView}>
+                    <BsList/>
+                </button>
+            </div>
+            <p>{filtered_products.length}
+                products found</p>
+            <hr/>
+            <form>
+                <label htmlFor='sort'>sort by</label>
+                <select
+                    name='sort'
+                    id='sort'
+                    className='sort-input'
+                    value={sort}
+                    onChange={updateSort}>
+                    <option value='price-lowest'>price (lowest)</option>
+                    <option value='price-highest'>price (highest)</option>
+                    <option value='name-a'>name (A-Z)</option>
+                    <option value='name-z'>name (Z-A)</option>
+                </select>
+            </form>
+        </Wrapper>
+    )
 }
 
-const Wrapper = styled.section`
+const Wrapper = styled.section `
   display: grid;
   grid-template-columns: auto auto 1fr auto;
   align-items: center;
@@ -62,6 +106,7 @@ const Wrapper = styled.section`
     font-size: 1rem;
     text-transform: capitalize;
     padding: 0.25rem 0.5rem;
+    cursor: pointer;
   }
   label {
     font-size: 1rem;
