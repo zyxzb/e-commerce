@@ -11,10 +11,17 @@ import {
 
 const filter_reducer = (state, action) => {
   if (action.type === LOAD_PRODUCTS) {
+    let maxPrice = action.payload.map(item => item.price);
+    maxPrice = Math.max(...maxPrice)
     return {
       ...state,
       all_products: [...action.payload],
       filtered_products: [...action.payload],
+      filters: {
+        ...state.filters,
+        max_price: maxPrice,
+        price: maxPrice
+      }
     }
   }
   if (action.type === SET_GRIDVIEW) {
@@ -36,20 +43,23 @@ const filter_reducer = (state, action) => {
     }
   }
   if (action.type === SORT_PRODUCTS) {
-    const {sort, filtered_products} = state;
+    const {
+      sort,
+      filtered_products
+    } = state;
     let tempProducts = [...filtered_products];
 
-    if(sort === 'price-lowest') {
+    if (sort === 'price-lowest') {
       tempProducts = tempProducts.sort((a, b) => {
         return a.price - b.price
       })
     }
-    if(sort === 'price-highest') {
+    if (sort === 'price-highest') {
       tempProducts = tempProducts.sort((a, b) => {
         return b.price - a.price
       })
     }
-    if(sort === 'name-a') {
+    if (sort === 'name-a') {
       tempProducts = tempProducts.sort((a, b) => {
         return a.name.localeCompare(b.name)
 
@@ -65,17 +75,58 @@ const filter_reducer = (state, action) => {
 
       })
     }
-    if(sort === 'name-z') {
+    if (sort === 'name-z') {
       tempProducts = tempProducts.sort((a, b) => {
         return b.name.localeCompare(a.name)
       })
     }
-
     return {
       ...state,
-      filtered_products : tempProducts,
+      filtered_products: tempProducts,
     }
   }
+
+  // start of the filter code
+
+  if (action.type === UPDATE_FILTERS) {
+    const {
+      name,
+      value
+    } = action.payload;
+    return {
+      ...state,
+      filters: {
+        ...state.filters,
+        [name]: value
+      }
+    }
+  }
+
+  if (action.type === FILTER_PRODUCTS) {
+    console.log('Filter works')
+    return {
+      ...state
+    }
+  }
+
+  if (action.type === CLEAR_FILTERS) {
+    console.log('Clear works')
+    return {
+      ...state,
+      filters: {
+        ...state.filters,
+        text: '',
+        category: 'all',
+        company: 'all',
+        color: 'all',
+        price: state.filters.max_price,
+        shipping: false
+      }
+    }
+  }
+
+  // end of the filter code
+
   throw new Error(`No Matching "${action.type}" - action type`)
 }
 
