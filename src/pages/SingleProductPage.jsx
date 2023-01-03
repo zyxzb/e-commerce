@@ -1,88 +1,97 @@
-import React, {useEffect} from 'react'
-import {useParams, useNavigate} from 'react-router-dom'
-import {useProductsContext} from '../context/products_context'
-import {single_product_url as url} from '../utils/constants'
-import {formatPrice} from '../utils/helpers'
+import React, { useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useProductsContext } from '../context/products_context';
+import { single_product_url as url } from '../utils/constants';
+import { formatPrice } from '../utils/helpers';
 import {
-    Loading,
-    Error,
-    ProductImages,
-    AddToCart,
-    Stars,
-    PageHero
-} from '../components'
-import styled from 'styled-components'
-import {Link} from 'react-router-dom'
+  Loading,
+  Error,
+  ProductImages,
+  AddToCart,
+  Stars,
+  PageHero,
+} from '../components';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const SingleProductPage = () => {
-    const {id} = useParams();
-    const navigate = useNavigate()
-    const {fetchSingleProduct, single_product, single_product_loading, single_product_error} = useProductsContext();
-    const {
-        name,
-        price,
-        description,
-        stock,
-        stars,
-        reviews,
-        id: sku,
-        company,
-        images
-    } = single_product;
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const {
+    fetchSingleProduct,
+    single_product,
+    single_product_loading,
+    single_product_error,
+  } = useProductsContext();
+  const {
+    name,
+    price,
+    description,
+    stock,
+    stars,
+    reviews,
+    id: sku,
+    company,
+    images,
+  } = single_product;
 
-    useEffect(() => {
-        fetchSingleProduct(`${url}${id}`);
-    }, [id])
+  useEffect(() => {
+    fetchSingleProduct(`${url}${id}`);
+    // eslint-disable-next-line
+  }, [id]);
 
-    useEffect(() => {
-        if (single_product_error) {
-            setTimeout(() => {
-                navigate('/')
-            }, 3000)
-        }
-    }, [single_product_error])
-
-    if (single_product_loading) {
-        return <Loading/>
-    }
-
+  useEffect(() => {
     if (single_product_error) {
-        return <Error/>
+      setTimeout(() => {
+        navigate('/');
+      }, 3000);
     }
+    // eslint-disable-next-line
+  }, [single_product_error]);
 
-    return (
-        <Wrapper>
-            <PageHero title={name} product></PageHero>
-            <div className="section section-center page">
-                <Link to='/products' className='btn'>back to productss</Link>
-                <div className="product-center">
-                    <ProductImages images={images}/>
-                    <section className='content'>
-                        <h2>{name}</h2>
-                        <Stars stars={stars} reviews={reviews}/>
-                        <h5 className="price">{formatPrice(price)}</h5>
-                        <p className='desc'>{description}</p>
-                        <p className='info'>
-                            <span>Available:</span>
-                            {stock > 0
-                                ? ` ${stock} in stock`
-                                : 'out of stock'}
-                        </p>
-                        <p className='info'>
-                            <span>SKU:</span>{sku}
-                        </p>
-                        <p className='info'>
-                            <span>Brand:</span>{company}
-                        </p>
-                        <hr/> {stock > 0 && <AddToCart single_product={single_product}/>}
-                    </section>
-                </div>
-            </div>
-        </Wrapper>
-    )
-}
+  if (single_product_loading) {
+    return <Loading />;
+  }
 
-const Wrapper = styled.main `
+  if (single_product_error) {
+    return <Error />;
+  }
+
+  return (
+    <Wrapper>
+      <PageHero title={name} product></PageHero>
+      <div className='section section-center page'>
+        <Link to='/products' className='btn'>
+          back to productss
+        </Link>
+        <div className='product-center'>
+          <ProductImages images={images} />
+          <section className='content'>
+            <h2>{name}</h2>
+            <Stars stars={stars} reviews={reviews} />
+            <h5 className='price'>{formatPrice(price)}</h5>
+            <p className='desc'>{description}</p>
+            <p className='info'>
+              <span>Available:</span>
+              {stock > 0 ? ` ${stock} in stock` : 'out of stock'}
+            </p>
+            <p className='info'>
+              <span>SKU:</span>
+              {sku}
+            </p>
+            <p className='info'>
+              <span>Brand:</span>
+              {company}
+            </p>
+            <hr /> {stock > 0 && <AddToCart single_product={single_product} />}
+          </section>
+        </div>
+      </div>
+    </Wrapper>
+  );
+};
+
+const Wrapper = styled.main`
   .product-center {
     display: grid;
     gap: 4rem;
@@ -114,6 +123,6 @@ const Wrapper = styled.main `
       font-size: 1.25rem;
     }
   }
-`
+`;
 
-export default SingleProductPage
+export default SingleProductPage;

@@ -1,47 +1,52 @@
-import React from 'react'
-import styled from 'styled-components'
-import logo from '../assets/logo.svg'
-import {Link} from 'react-router-dom'
-import {FaTimes} from 'react-icons/fa'
-import {links} from '../utils/constants'
-import CartButtons from './CartButtons'
-import {useProductsContext} from '../context/products_context'
-import {useUserContext} from '../context/user_context'
+import React from 'react';
+import styled from 'styled-components';
+import logo from '../assets/logo.svg';
+import { Link } from 'react-router-dom';
+import { FaTimes } from 'react-icons/fa';
+import { links } from '../utils/constants';
+import CartButtons from './CartButtons';
+import { useProductsContext } from '../context/products_context';
+import { useUserContext } from '../context/user_context';
 
 const Sidebar = () => {
-    const {isSidebarOpen, closeSidebar} = useProductsContext()
-    return (
-        <SidebarContainer>
-            <aside
-                className={isSidebarOpen
-                ? 'sidebar show-sidebar'
-                : 'sidebar'}>
-                <div className='sidebar-header'>
-                    <img src={logo} alt='logo' className='logo'/>
-                    <button type='button' className='close-btn' onClick={closeSidebar}>
-                        <FaTimes/>
-                    </button>
-                </div>
-                <ul className='links'>
-                    {links.map(link => {
-                        const {id, text, url} = link;
-                        return (
-                            <li key={id}>
-                                <Link to={url} onClick={closeSidebar}>{text}</Link>
-                            </li>
-                        )
-                    })}
-                    <li>
-                        <Link to='/checkout' onClick={closeSidebar}>Checkout</Link>
-                    </li>
-                </ul>
-                <CartButtons/>
-            </aside>
-        </SidebarContainer>
-    )
-}
+  const { isSidebarOpen, closeSidebar } = useProductsContext();
+  const { myUser } = useUserContext();
 
-const SidebarContainer = styled.div `
+  return (
+    <SidebarContainer>
+      <aside className={isSidebarOpen ? 'sidebar show-sidebar' : 'sidebar'}>
+        <div className='sidebar-header'>
+          <img src={logo} alt='logo' className='logo' />
+          <button type='button' className='close-btn' onClick={closeSidebar}>
+            <FaTimes />
+          </button>
+        </div>
+        <ul className='links'>
+          {links.map((link) => {
+            const { id, text, url } = link;
+            return (
+              <li key={id}>
+                <Link to={url} onClick={closeSidebar}>
+                  {text}
+                </Link>
+              </li>
+            );
+          })}
+          {myUser ? (
+            <li>
+              <Link to='/checkout' onClick={closeSidebar}>
+                Checkout
+              </Link>
+            </li>
+          ) : null}
+        </ul>
+        <CartButtons />
+      </aside>
+    </SidebarContainer>
+  );
+};
+
+const SidebarContainer = styled.div`
   text-align: center;
   z-index: 2;
   .sidebar-header {
@@ -101,9 +106,9 @@ const SidebarContainer = styled.div `
     &.show-sidebar {
       transform: translate(0);
       visibility: visible;
-      }
+    }
   }
-  
+
   .cart-btn-wrapper {
     margin: 2rem auto;
   }
@@ -112,6 +117,6 @@ const SidebarContainer = styled.div `
       display: none;
     }
   }
-`
+`;
 
-export default Sidebar
+export default Sidebar;

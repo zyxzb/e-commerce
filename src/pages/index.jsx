@@ -9,13 +9,13 @@ import ProductsPage from './ProductsPage';
 import SingleProductPage from './SingleProductPage';
 
 export {
-    HomePage,
-    AboutPage,
-    AuthWrapper,
-    CartPage,
-    CheckoutPage,
-    ErrorPage,
-    PrivateRoute,
-    ProductsPage,
-    SingleProductPage
-}
+  HomePage,
+  AboutPage,
+  AuthWrapper,
+  CartPage,
+  CheckoutPage,
+  ErrorPage,
+  PrivateRoute,
+  ProductsPage,
+  SingleProductPage,
+};
